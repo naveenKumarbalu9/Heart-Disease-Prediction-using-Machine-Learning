@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>Predict · CardioSense</title>
+</head>
+
+<body>
+{% include "_bg_hearts.html" %}
+
+<div class="container wide">
+    <div class="brand">
+        <svg class="brand-icon" viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.3-8.3C.6 9.7 1.4 6 4.4 4.8 6.7 3.9 9 4.8 12 8c3-3.2 5.3-4.1 7.6-3.2 3 1.2 3.8 4.9 1.7 7.9C18.7 16.65 12 21 12 21z" fill="#ff4d6d"/></svg>
+        <h2>Heart Disease Risk Check</h2>
+    </div>
+    <p class="subtitle">Enter the patient's clinical values below</p>
+
+    <div class="ecg-wrap">
+        <svg viewBox="0 0 600 60" preserveAspectRatio="none">
+            <path class="ecg-line" d="M0,30 L60,30 L75,10 L90,50 L105,30 L140,30 L155,15 L170,45 L185,30 L300,30 L315,10 L330,50 L345,30 L380,30 L395,15 L410,45 L425,30 L600,30
+                                       M600,30 L660,30 L675,10 L690,50 L705,30 L740,30 L755,15 L770,45 L785,30 L900,30 L915,10 L930,50 L945,30 L980,30 L995,15 L1010,45 L1025,30 L1200,30" />
+        </svg>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="/predict" method="post">
+        <div class="field-grid">
+
+            <div>
+                <label for="age">Age (years)</label>
+                <input type="number" id="age" name="age" placeholder="e.g. 54" min="1" max="120" required>
+            </div>
+
+            <div>
+                <label for="sex">Sex</label>
+                <select id="sex" name="sex" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+
+            <div class="full">
+                <label for="cp">Chest Pain Type</label>
+                <select id="cp" name="cp" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="0">Typical angina</option>
+                    <option value="1">Atypical angina</option>
+                    <option value="2">Non-anginal pain</option>
+                    <option value="3">Asymptomatic</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="trestbps">Resting Blood Pressure (mm Hg)</label>
+                <input type="number" id="trestbps" name="trestbps" placeholder="e.g. 130" required>
+            </div>
+
+            <div>
+                <label for="chol">Cholesterol (mg/dl)</label>
+                <input type="number" id="chol" name="chol" placeholder="e.g. 246" required>
+            </div>
+
+            <div>
+                <label for="fbs">Fasting Blood Sugar &gt; 120 mg/dl</label>
+                <select id="fbs" name="fbs" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="restecg">Resting ECG</label>
+                <select id="restecg" name="restecg" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="0">Normal</option>
+                    <option value="1">ST-T wave abnormality</option>
+                    <option value="2">Left ventricular hypertrophy</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="thalach">Max Heart Rate Achieved</label>
+                <input type="number" id="thalach" name="thalach" placeholder="e.g. 150" required>
+            </div>
+
+            <div>
+                <label for="exang">Exercise-Induced Angina</label>
+                <select id="exang" name="exang" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="oldpeak">Oldpeak (ST depression)</label>
+                <input type="number" step="0.1" id="oldpeak" name="oldpeak" placeholder="e.g. 1.0" required>
+            </div>
+
+            <div>
+                <label for="slope">Slope of Peak Exercise ST</label>
+                <select id="slope" name="slope" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="0">Upsloping</option>
+                    <option value="1">Flat</option>
+                    <option value="2">Downsloping</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="ca">Major Vessels Colored (0-3)</label>
+                <select id="ca" name="ca" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="full">
+                <label for="thal">Thalassemia</label>
+                <select id="thal" name="thal" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="0">Normal</option>
+                    <option value="1">Fixed defect</option>
+                    <option value="2">Reversible defect</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button type="submit">Analyze Risk</button>
+    </form>
+</div>
+</body>
+</html>

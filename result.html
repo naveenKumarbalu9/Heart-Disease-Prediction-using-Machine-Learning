@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>Result · CardioSense</title>
+</head>
+
+<body>
+{% include "_bg_hearts.html" %}
+
+<div class="container">
+    {% if is_positive %}
+        <svg class="result-icon positive" viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.3-8.3C.6 9.7 1.4 6 4.4 4.8 6.7 3.9 9 4.8 12 8c3-3.2 5.3-4.1 7.6-3.2 3 1.2 3.8 4.9 1.7 7.9C18.7 16.65 12 21 12 21z" fill="#ff4d6d"/></svg>
+        <p class="result-text positive">⚠ {{ result }}</p>
+    {% else %}
+        <svg class="result-icon negative" viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.3-8.3C.6 9.7 1.4 6 4.4 4.8 6.7 3.9 9 4.8 12 8c3-3.2 5.3-4.1 7.6-3.2 3 1.2 3.8 4.9 1.7 7.9C18.7 16.65 12 21 12 21z" fill="#34d8a3"/></svg>
+        <p class="result-text negative">✓ {{ result }}</p>
+    {% endif %}
+
+    {% if confidence is not none %}
+    <div class="confidence-wrap">
+        <div class="confidence-label">
+            <span>Model confidence</span>
+            <span>{{ confidence }}%</span>
+        </div>
+        <div class="confidence-bar">
+            <div class="confidence-fill {{ 'positive' if is_positive else 'negative' }}" style="width: {{ confidence }}%;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if inputs %}
+    <div class="summary-grid">
+        {% for k, v in inputs.items() %}
+        <div class="summary-item">
+            <div class="k">{{ k }}</div>
+            <div class="v">{{ v }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <a class="link-btn" href="/home"><button type="button">Run Another Check</button></a>
+
+    <p class="disclaimer">This tool gives a statistical estimate only and is not a medical diagnosis. Please consult a qualified physician.</p>
+</div>
+</body>
+</html>
